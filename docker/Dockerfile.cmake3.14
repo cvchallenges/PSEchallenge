@@ -1,0 +1,16 @@
+FROM ubuntu:18.04
+WORKDIR /src
+
+#ENV OPENCV_VERSION="4.2.0"
+
+RUN apt update && apt install -y \
+    gcc g++ python3.8-dev python3-pip \
+    libavcodec-dev libavformat-dev libswscale-dev \
+    libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev \
+    libgtk-3-dev libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libwebp-dev \
+    git wget unzip nano && python3.8 -m pip install numpy==1.20.0
+
+RUN wget https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz \
+    && tar xzf cmake-3.14.0-Linux-x86_64.tar.gz \
+    && ln -fs /src/cmake-3.14.0-Linux-x86_64/bin/cmake /usr/bin/cmake \
+    && ln -fs /src/cmake-3.14.0-Linux-x86_64/bin/cmake-gui /usr/bin/cmake-gui
