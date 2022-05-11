@@ -1,0 +1,43 @@
+FROM ubuntu:18.04
+WORKDIR /src
+
+RUN apt update && apt install -y \
+    gcc g++ python3.8-dev curl python3.8-distutils && curl https://bootstrap.pypa.io/get-pip.py --output get-pip.py && \
+    python3.8 get-pip.py && pip3 -V && apt install -y \
+    libavcodec-dev libavformat-dev libswscale-dev \
+    libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev \
+    libgtk-3-dev libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libwebp-dev \
+    git wget unzip nano && python3.8 -m pip install numpy==1.20.0
+
+RUN wget https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz \
+    && tar xzf cmake-3.14.0-Linux-x86_64.tar.gz \
+    && ln -fs /src/cmake-3.14.0-Linux-x86_64/bin/cmake /usr/bin/cmake \
+    && ln -fs /src/cmake-3.14.0-Linux-x86_64/bin/cmake-gui /usr/bin/cmake-gui
+
+# Second: build OpenCV 4.2
+#
+ENV OPENCV_VERSION="4.2.0"
+RUN cd \
+    && wget https://github.com/opencv/opencv/archive/4.2.0.zip \
+    && unzip 4.2.0.zip \
+    && cd opencv-4.2.0 \
+    && mkdir build \
+    && cd build \
+    && cmake .. \
+    && make -j16 \
+    && make install \
+    && cd \
+    && rm 4.2.0.zip
+
+
+# Third: install and build opencv_contrib
+#
+RUN cd \
+    && wget https://github.com/opencv/opencv_contrib/archive/4.2.0.zip \
+    && unzip 4.2.0.zip \
+    && cd opencv-4.2.0/build \
+    && cmake -DOPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-4.2.0/modules/ .. \
+    && make -j16 \
+    && make install \
+    && cd ../.. \
+    && rm 4.2.0.zip

@@ -1,42 +1,8 @@
-FROM ubuntu:18.04
-WORKDIR /src
-
-RUN apt update && apt install -y \
-    gcc g++ python3.8-dev python3-pip \
-    libavcodec-dev libavformat-dev libswscale-dev \
-    libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev \
-    libgtk-3-dev libpng-dev libjpeg-dev libopenexr-dev libtiff-dev libwebp-dev \
-    git wget unzip nano && python3.8 -m pip install numpy==1.20.0
-
-RUN wget https://cmake.org/files/v3.14/cmake-3.14.0-Linux-x86_64.tar.gz \
-    && tar xzf cmake-3.14.0-Linux-x86_64.tar.gz \
-    && ln -fs /src/cmake-3.14.0-Linux-x86_64/bin/cmake /usr/bin/cmake \
-    && ln -fs /src/cmake-3.14.0-Linux-x86_64/bin/cmake-gui /usr/bin/cmake-gui
-
-# Second: build OpenCV 4.2
-#
-ENV OPENCV_VERSION="4.2.0"
-RUN cd \
-    && wget https://github.com/opencv/opencv/archive/4.2.0.zip \
-    && unzip 4.2.0.zip \
-    && cd opencv-4.2.0 \
-    && mkdir build \
-    && cd build \
-    && cmake .. \
-    && make -j16 \
-    && make install \
-    && cd \
-    && rm 4.2.0.zip
-
-
-# Third: install and build opencv_contrib
-#
-RUN cd \
-    && wget https://github.com/opencv/opencv_contrib/archive/4.2.0.zip \
-    && unzip 4.2.0.zip \
-    && cd opencv-4.2.0/build \
-    && cmake -DOPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-4.2.0/modules/ .. \
-    && make -j16 \
-    && make install \
-    && cd ../.. \
-    && rm 4.2.0.zip
+FROM 622618148766.dkr.ecr.us-east-1.amazonaws.com/cvchallenges:cv4.2.0
+COPY . /src/PSEchallenge/
+WORKDIR /src/PSEchallenge
+RUN  cmake . && make && ./challenge data/img_left.png data/img_right.png data/intrinsics.yml \
+     && cd tests && cmake . && make && ./stereo_util_test && cd CMakeFiles/stereo_util_test.dir/ \
+     && gcov stereo_util_test.cpp.gcno && pip3 install gcovr \
+     && cd ../.. && gcovr CMakeFiles/stereo_util_test.dir/ \
+     && gcovr --html-details CMakeFiles/stereo_util_test.dir/coverage.html CMakeFiles/stereo_util_test.dir/
