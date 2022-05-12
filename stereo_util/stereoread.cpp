@@ -1,8 +1,25 @@
+/** \copyright Copyright (C) 2022 NODAR Inc. All rights reserved.
+ *  
+ *  This software is intellectual property of NODAR Inc.
+ * 
+ *  \file stereoread.cpp
+ *  \brief This is the cpp file to read stereo pairs and camera parameters.
+ * 
+ *  \author      Developer A
+ *  \modified by Developer B
+ *  \date        Thu May 12 06:10:01 2022
+*/
+
 #include "stereoread.h"
 
 namespace stereo3d
 {
 
+//	Function: stereoread::readStereo()
+//  	To load left image, right image and camera parameters
+//  Output:
+//		Loaded into stereo_data_struct
+//
 stereo_data_struct stereoread::readStereo()
 {
 	stereo_data_struct stereo_data;

@@ -1,9 +1,26 @@
+/** \copyright Copyright (C) 2022 NODAR Inc. All rights reserved.
+ *  
+ *  This software is intellectual property of NODAR Inc.
+ * 
+ *  \file stereorectify.cpp
+ *  \brief This is the cpp file to rectify stereo image pairs.
+ * 
+ *  \author      Developer A
+ *  \modified by Developer B
+ *  \date        Thu May 12 06:10:01 2022
+*/
+
 #include "stereorectify.h"
 
 
 namespace stereo3d
 {
 
+//	Function: stereorectify::rectifyPair()
+//  	To rectify left image and right image
+//  Output:
+//		Loaded into stereo_rectify_struct
+//
 stereo_rectify_struct stereorectify::rectifyPair()
 {
 	stereo_params_struct cam_param = stereo_read_data.cam_param;

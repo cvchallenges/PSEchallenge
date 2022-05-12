@@ -1,9 +1,26 @@
+/** \copyright Copyright (C) 2022 NODAR Inc. All rights reserved.
+ *  
+ *  This software is intellectual property of NODAR Inc.
+ * 
+ *  \file stereodisparity.cpp
+ *  \brief This is the cpp file to generate disparity map from image pairs and intrinsic parameters.
+ * 
+ *  \author      Developer A
+ *  \modified by Developer B
+ *  \date        Thu May 12 06:10:01 2022
+*/
+
 #include "stereodisparity.h"
 #include <opencv2/core/utils/filesystem.hpp>
 
 namespace stereo3d
 {
 
+//	Function: stereodisparity::disparityMap()
+//  	To compute the disparity map from stereo image pair
+//  Output:
+//		Loaded into stereo_disparity_struct
+//
 stereo_disparity_struct stereodisparity::disparityMap()
 {
 	// Create an object of StereoSGBM algorithm
@@ -23,7 +40,7 @@ stereo_disparity_struct stereodisparity::disparityMap()
     disparity.convertTo(disparity, CV_8UC1, 1.0);
 
 	// Save output
-
+    //
 	string result_path_base = result_path.substr(0, result_path.rfind('/'));
 	bool path_ready = cv::utils::fs::createDirectory(result_path_base);
 	// cout << result_path_base << " is ready? " << path_ready << endl;

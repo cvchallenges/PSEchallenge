@@ -1,3 +1,15 @@
+/** \copyright Copyright (C) 2022 NODAR Inc. All rights reserved.
+ *  
+ *  This software is intellectual property of NODAR Inc.
+ * 
+ *  \file stereostruct.h
+ *  \brief This is the header file for stereo structures.
+ * 
+ *  \author      Developer A
+ *  \modified by Developer B
+ *  \date        Thu May 12 06:10:01 2022
+*/
+
 #ifndef STEREO_UTIL_STEREOSTRUCT_H
 #define STEREO_UTIL_STEREOSTRUCT_H
 

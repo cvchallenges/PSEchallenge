@@ -1,3 +1,15 @@
+/** \copyright Copyright (C) 2022 NODAR Inc. All rights reserved.
+ *  
+ *  This software is intellectual property of NODAR Inc.
+ * 
+ *  \file main.cpp
+ *  \brief This is the main file to generate disparity map from image pairs and intrinsic parameters.
+ * 
+ *  \author      Developer A
+ *  \modified by Developer B
+ *  \date        Thu May 12 06:10:01 2022
+*/
+
 #include <iostream>
 #include <opencv2/opencv.hpp>
 #include <opencv2/calib3d.hpp>
@@ -13,8 +25,20 @@ using namespace std;
 using namespace stereo3d;
 using namespace stereo3d::chrono;
 
-// Example usage:
-// ./challenge ./data/img_left.png ./data/img_right.png ./data/intrinsics.yml
+/** 
+ *  Example usage:
+ *      ./challenge ./data/img_left.png ./data/img_right.png ./data/intrinsics.yml
+ *  Input: 
+ *      left image, right image, camera parameter file
+ *  Output: 
+ *      disparity map
+ *  Default input dir:
+ *      ./data
+ *  Default output dir:
+ *      ./result
+ *  
+ *  (TODO: to add a config file for default data dir & ruslt dir)
+ */
 int main(int argc, char* argv[])
 {
 	if(argc != 4){
@@ -24,12 +48,12 @@ int main(int argc, char* argv[])
 
     cout << "OpenCV Version: " << CV_VERSION << endl;
 
-	// Default result path
+	// Default result path (TODO: move _hardcode_ to a separate config file)
 	string result_path = "./result/disparity.png";
 
 	time_point<high_resolution_clock> time_now = time_print_now();
 	
-	// Read stereo files
+	// Read stereo files:
 	//
 	stereoread stereo_read_obj(argv[1], argv[2], argv[3]);
 	stereo_data_struct stereo_read_data = stereo_read_obj.readStereo();
